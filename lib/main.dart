@@ -5,6 +5,7 @@ import 'HomePage.dart';
 import 'ImagePicker.dart';
 
 import 'SignUp.dart';
+import 'JsonParser.dart';
 
 void main() {
   runApp(const MyApp());
