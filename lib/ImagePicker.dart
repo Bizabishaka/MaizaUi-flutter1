@@ -42,6 +42,10 @@ class _ImagePickerAppState extends State<ImagePickerApp> {
   }
 
   Future<void> _uploadImage(String title, File file) async {
+    setState(() {
+    _isLoading = true;
+    _serverResponse = '';
+  });
     try {
       // Check if the app has permission to access the device's location
       bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -100,17 +104,30 @@ class _ImagePickerAppState extends State<ImagePickerApp> {
 
 
 
+      // Parse the JSON response using JsonParser
+    try {
+      final parsedData = JsonParser.fromJson(result);
+      // Access specific fields assuming parsedData has structure: `status`, `message`, `data`
       setState(() {
-        _serverResponse = result;
+        _serverResponse = "Status: ${parsedData.status}\n"
+                          "Message: ${parsedData.message}\n"
+                          "Data: ${parsedData.data}";
       });
-    } catch (e) {
-      print('Error uploading image: $e');
+    } catch (jsonError) {
       setState(() {
-        _serverResponse = 'Error uploading image: $e';
+        _serverResponse = 'Failed to parse response: $jsonError';
       });
     }
+  } catch (e) {
+    setState(() {
+      _serverResponse = 'Error uploading image: $e';
+    });
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
