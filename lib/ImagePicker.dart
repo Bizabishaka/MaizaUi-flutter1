@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -109,9 +110,9 @@ class _ImagePickerAppState extends State<ImagePickerApp> {
       final parsedData = JsonParser.fromJson(result);
       // Access specific fields assuming parsedData has structure: `status`, `message`, `data`
       setState(() {
-        _serverResponse = "Status: ${parsedData.status}\n"
-                          "Message: ${parsedData.message}\n"
-                          "Data: ${parsedData.data}";
+        _serverResponse = "Recommendation: ${parsedData.recommendations}\n"
+                          "Disease: ${parsedData.disease}\n"
+                          "Description: ${parsedData.description}";
       });
     } catch (jsonError) {
       setState(() {
